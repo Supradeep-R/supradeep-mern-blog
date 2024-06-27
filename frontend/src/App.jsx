@@ -6,10 +6,12 @@ import Dashboard from "../src/Pages/Dashboard";
 import Projects from "../src/Pages/Projects";
 import Signin from "../src/Pages/Signin";
 import Signup from "../src/Pages/Signup";
+import Header from "../src/Components/Header";
 
 const App = () => {
   return (
-    <div className="text-3xl">
+    <div>
+      <Header/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/about" element={<About />} />
