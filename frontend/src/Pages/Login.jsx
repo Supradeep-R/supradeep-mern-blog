@@ -1,11 +1,12 @@
-import {React,useState ,}  from 'react'
+import {React,useContext,useState ,}  from 'react'
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { Link ,useNavigate } from "react-router-dom";
 import axios from "axios"
+import { UserContext } from '../../context/UserContext';
 
 
 const Login = () => {
-
+  const {setUserInfo} = useContext(UserContext);
   const navigate = useNavigate();
   const [formData,setFormData]=useState({});
 
@@ -26,6 +27,7 @@ const Login = () => {
       
       if (response.status === 200) {
         console.log('Login successful:', response.data);
+        setUserInfo(response.data);
         navigate('/');
       } else {
         console.error('Login failed');

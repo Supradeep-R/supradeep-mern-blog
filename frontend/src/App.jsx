@@ -8,21 +8,23 @@ import Register from "../src/Pages/Register";
 import Login from "../src/Pages/Login";
 import Header from "../src/Components/Header";
 import FooterComp from "./Components/FooterComp";
+import { UserContextProvider } from "../context/UserContext";
+import CreatePost from "./Pages/CreatePost";
 
 const App = () => {
   return (
-    <div>
+    <UserContextProvider>
       <Header/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/about" element={<About />} />
-        <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/create-post" element={<CreatePost />} />
         <Route exact path="/projects" element={<Projects />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
       </Routes>
       <FooterComp/>
-    </div>
+    </UserContextProvider>
   );
 };
 

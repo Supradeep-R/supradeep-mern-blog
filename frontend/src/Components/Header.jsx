@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 import { AiOutlineSearch } from "react-icons/ai";
 import {
   Avatar,
-  Dropdown,
-  DropdownDivider,
-  DropdownHeader,
-  DropdownItem,
-  Navbar,
   Button,
+  Navbar,
   NavbarBrand,
   NavbarCollapse,
   NavbarLink,
@@ -18,65 +15,58 @@ import {
 import axios from "axios";
 
 const Header = () => {
-  const [username, setUsername] = useState(null);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/profile", {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          setUsername(response.data.username);
-          console.log(response.data.username);
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    };
-
-    fetchData();
+    // Fetch user info if not already fetched
+    if (!userInfo) {
+      fetchUserInfo();
+    }
   }, []);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/profile", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        setUserInfo(userData);
+      } else {
+        // Handle error
+        console.error("Failed to fetch user information");
+      }
+    } catch (error) {
+      console.error("Error fetching user information:", error);
+    }
+  };
 
   const logout = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/logout", {}, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/logout",
+        {},
+        { withCredentials: true }
+      );
       if (response.status === 200) {
-        setUsername(null);
+        setUserInfo(null);
+        navigate("/login"); // Redirect to login page after logout
       }
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
     }
   };
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/api/profile', {
-  //     credentials: 'include',
-  //   }).then(response => {
-  //     response.json().then(userInfo => {
-  //       setUsername(userInfo.username);
-  //       console.log(username);
-  //     });
-  //   });
-  // }, []);
 
-  // function logout() {
-  //   fetch('http://localhost:3000/api/logout', {
-  //     credentials: 'include',
-  //     method: 'POST',
-  //   });
-  //   setUsername(null);
-  // }
+  const path = window.location.pathname; // Use window.location for path
 
-  const path = useLocation().pathname;
   return (
-    <Navbar fluid rounded>
+    <Navbar className="shadow sticky w-full top-0 z-10" fluid rounded>
       {/* Logo */}
       <NavbarBrand as={"div"}>
         <NavbarBrand as={Link} to="/">
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Supradeep's Blog Website {username}
+            Supradeep's Blog Website 
           </span>
         </NavbarBrand>
       </NavbarBrand>
@@ -94,9 +84,9 @@ const Header = () => {
         <AiOutlineSearch />
       </Button>
 
-      {/* Signin and drop downs and navigations */}
+      {/* Signin, logout, and navigation links */}
       <div className="flex gap-2 md:order-2">
-        {username ? (
+        {userInfo && userInfo.username ? (
           <Button
             onClick={logout}
             className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 focus:ring-0 hover:scale-125 "
@@ -115,31 +105,10 @@ const Header = () => {
           </Button>
         )}
 
-        {/* <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded
-            />
-          }
-        >
-          <DropdownHeader>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              name@flowbite.com
-            </span>
-          </DropdownHeader>
-          <DropdownItem>Dashboard</DropdownItem>
-          <DropdownItem>Settings</DropdownItem>
-          <DropdownItem>Earnings</DropdownItem>
-          <DropdownDivider />
-          <DropdownItem>Sign out</DropdownItem>
-        </Dropdown> */}
         <NavbarToggle />
       </div>
+
+      {/* Navbar links */}
       <NavbarCollapse>
         <NavbarLink active={path === "/"} as={Link} to="/">
           Home
@@ -147,8 +116,8 @@ const Header = () => {
         <NavbarLink active={path === "/about"} as={Link} to="/about">
           About
         </NavbarLink>
-        <NavbarLink active={path === "/dashboard"} as={Link} to="/dashboard">
-          Dashboard
+        <NavbarLink active={path === "/create-post"} as={Link} to="/create-post">
+          Create Post
         </NavbarLink>
         <NavbarLink active={path === "/projects"} as={Link} to="/projects">
           Projects

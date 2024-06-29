@@ -17,6 +17,8 @@ mongoDB();
 // registering routes
 const authRoutes = require("../api/routes/auth.route.js");
 app.use("/api", authRoutes);
+const userRoutes = require("../api/routes/user.route.js");
+app.use("/user", userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server listening at port ${process.env.PORT}`);
