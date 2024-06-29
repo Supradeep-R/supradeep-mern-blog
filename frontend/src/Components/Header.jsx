@@ -35,10 +35,10 @@ const Header = () => {
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
-          className="hidden sm:inline focus:outline-none focus:ring-full"
+          className="hidden lg:inline focus:outline-none focus:ring-full"
         ></TextInput>
       </form>
-      <Button className="sm:hidden" color="gray">
+      <Button className="lg:hidden" color="gray">
         <AiOutlineSearch />
       </Button>
 
@@ -46,11 +46,11 @@ const Header = () => {
       <div className="flex gap-2 md:order-2">
         <Button
           as={Link}
-          to="/sign-in"
+          to="/register"
           className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 focus:ring-0 hover:scale-125 "
           outline
         >
-          Sign-in
+          Register
         </Button>
         {/* <Dropdown
           arrowIcon={false}
