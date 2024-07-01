@@ -3,7 +3,6 @@ const User = require("../models/user.model");
 
 const authenticateToken = (req, res, next) => {
   const token = req.cookies.access_token;
-
   if (!token) {
     return res
       .status(401)
@@ -23,8 +22,7 @@ const authenticateToken = (req, res, next) => {
         return res.status(404).json({ message: "User not found" });
       }
 
-      req.user = user; 
-      console.log("auth middle ware is called and user is :"+req.user);
+      req.user = user;
       // Attach user object to request
       next(); // Pass control to the next middleware
     } catch (error) {

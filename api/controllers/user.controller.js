@@ -11,4 +11,52 @@ const createPost = async(req,res)=>{
    }
 }
 
-module.exports={createPost};
+const viewPosts = async(req,res)=>{
+   res.json(
+      await Post.find()
+        .populate('author', ['username'])
+        .sort({createdAt: -1})
+    );
+}
+const viewSinglePost = async (req, res) => {
+   const { id } = req.params;
+   try {
+     const postDoc = await Post.findById(id).populate('author', ['username']);
+     res.json(postDoc);
+   } catch (error) {
+     res.status(500).json({ message: 'Error fetching the post', error });
+   }
+ };
+ 
+ const updateSinglePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, summary, content, imageURL } = req.body;
+
+  // console.log("this is from update single post :" + req.user.id);
+
+  try {
+    const postDoc = await Post.findById(id);
+    if (!postDoc) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(req.user.id);
+    if (!isAuthor) {
+      return res.status(400).json('You are not the author');
+    }
+
+    const updatedData = { title, summary, content };
+    if (imageURL) {
+      updatedData.imageURL = imageURL;
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(id, updatedData, { new: true });
+
+    return res.status(200).json({ message: "Successfully updated post", updatedPost });
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return res.status(500).json({ message: "Some error occurred in updating the blog", error });
+  }
+};
+
+module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost };

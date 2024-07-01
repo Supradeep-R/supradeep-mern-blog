@@ -70,13 +70,13 @@ const getProfile = async (req, res) => {
   const { access_token } = req.cookies;
   jwt.verify(access_token, process.env.SECRET_KEY, {}, (err, info) => {
     if (err) {
-      res.status(400).json({message:"jwt not provided"})
-    };
+      return res.status(400).json({ message: "jwt not provided" });
+    }
     res.json(info);
   });
 };
 const logout = (req, res) => {
-  console.log("logout function called");
+  
   res
     .clearCookie("access_token", { path: "/" })
     .json({ message: "Logged out successfully" });

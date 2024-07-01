@@ -18,29 +18,28 @@ const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Fetch user info if not already fetched
-    if (!userInfo) {
-      fetchUserInfo();
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Fetch user info if not already fetched
+  //   if (!userInfo || !userInfo.username) {
+  //     fetchUserInfo();
+  //   }
+  // }, [userInfo]);
 
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/profile", {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const userData = await response.json();
-        setUserInfo(userData);
-      } else {
-        // Handle error
-        console.error("Failed to fetch user information");
-      }
-    } catch (error) {
-      console.error("Error fetching user information:", error);
-    }
-  };
+  // const fetchUserInfo = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:3000/api/profile", {
+  //       credentials: "include",
+  //     });
+  //     if (response.ok) {
+  //       const userData = await response.json();
+  //       setUserInfo(userData);
+  //     } else {
+  //       console.error("Failed to fetch user information");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user information:", error);
+  //   }
+  // };
 
   const logout = async () => {
     try {
@@ -50,8 +49,9 @@ const Header = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
+        navigate("/login");
         setUserInfo(null);
-        navigate("/login"); // Redirect to login page after logout
+        localStorage.removeItem('userInfo');
       }
     } catch (error) {
       console.error("Logout error:", error);
@@ -66,7 +66,7 @@ const Header = () => {
       <NavbarBrand as={"div"}>
         <NavbarBrand as={Link} to="/">
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Supradeep's Blog Website 
+            Supradeep's Blog Website
           </span>
         </NavbarBrand>
       </NavbarBrand>
@@ -116,11 +116,15 @@ const Header = () => {
         <NavbarLink active={path === "/about"} as={Link} to="/about">
           About
         </NavbarLink>
-        <NavbarLink active={path === "/create-post"} as={Link} to="/create-post">
+        <NavbarLink
+          active={path === "/create-post"}
+          as={Link}
+          to="/create-post"
+        >
           Create Post
         </NavbarLink>
-        <NavbarLink active={path === "/projects"} as={Link} to="/projects">
-          Projects
+        <NavbarLink active={path === "/view-posts"} as={Link} to="/view-posts">
+          View Posts
         </NavbarLink>
       </NavbarCollapse>
     </Navbar>

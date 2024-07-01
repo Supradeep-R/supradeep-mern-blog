@@ -35,9 +35,7 @@ const CreatePost = () => {
           })
             .then((res) => res.json())
             .then((data) => {
-              setImageURL(data.url.toString());
-              console.log(data.url.toString());
-              
+              setImageURL(data.url.toString());   
             })
             .catch((err) => {
               console.log(err);
@@ -67,7 +65,7 @@ const CreatePost = () => {
         },
         withCredentials:true
       })
-      navigate('/');
+      navigate('/view-post');
     } catch (error) {
       console.log("some error in posting : "+error);
     }

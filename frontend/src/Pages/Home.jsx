@@ -7,11 +7,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userInfo.username) {
-      console.log(userInfo.username);
+    // console.log(userInfo);
+    if (!userInfo || !userInfo.username) {
       navigate("/login");
     }
-  }, [userInfo,navigate]);
+  }, [userInfo, navigate]);
 
   return <div>Home</div>;
 };
