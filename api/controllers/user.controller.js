@@ -59,4 +59,23 @@ const viewSinglePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost };
+const viewAuthorPosts = async (req, res) => {
+  console.log("called view author posts");
+  console.log(req.user)
+  const { id } = req.params;
+  console.log(req.params);
+  console.log("Received author ID:", id);
+
+  try {
+    const posts = await Post.find({ author: id }).populate('author', ['username']).sort({ createdAt: -1 });
+    console.log(posts);
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No posts posted by this author" });
+    }
+
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving posts", error });
+  }
+};
+module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost ,viewAuthorPosts};

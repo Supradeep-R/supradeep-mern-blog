@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../src/Pages/Home";
 import About from "../src/Pages/About";
 import ViewPosts from "../src/Pages/ViewPosts";
+import ViewAuthorPosts from "./Pages/ViewAuthorPosts";
 import ViewSinglePost from "../src/Pages/ViewSinglePost";
 import Register from "../src/Pages/Register";
 import Login from "../src/Pages/Login";
@@ -22,6 +23,7 @@ const App = () => {
         <Route exact path="/create-post" element={<CreatePost />} />
         <Route exact path="/view-posts" element={<ViewPosts />} />
         <Route exact path="/view-single-post/:id" element={<ViewSinglePost />} />
+        <Route exact path="/view-author-posts/:id" element={<ViewAuthorPosts />} />
         <Route exact path="/edit-post/:id" element={<EditPost />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />

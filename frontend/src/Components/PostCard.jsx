@@ -32,7 +32,9 @@ const PostCard = ({
           {summary}
         </p>
         <p className="info mt-2 text-sm text-gray-600 dark:text-gray-400">
-          <span className="author font-medium">{author.username}</span>
+          <span className="author font-medium">
+            <Link to={`/view-author-posts/${author._id}`} className="underline">@{author.username}</Link>
+          </span>
           <span className="ml-2">{formatISO9075(new Date(createdAt))}</span>
         </p>
         <Link to={`/view-single-post/${_id}`} className="mt-4 inline-block">
