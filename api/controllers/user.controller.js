@@ -61,7 +61,6 @@ const viewSinglePost = async (req, res) => {
 
 const viewAuthorPosts = async (req, res) => {
   console.log("called view author posts");
-  console.log(req.user)
   const { id } = req.params;
   console.log(req.params);
   console.log("Received author ID:", id);

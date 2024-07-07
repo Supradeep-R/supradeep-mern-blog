@@ -99,7 +99,7 @@ const Register = () => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center gap-4 flex-col md:flex-row">
+    <div className="min-h-screen flex justify-center items-center gap-4 flex-col md:flex-row">
       {showToast && (
         <div className="fixed top-5 right-5 z-50">
           <Toast>
@@ -126,7 +126,7 @@ const Register = () => {
 
       {/* right */}
       <div className="w-1/2 flex flex-col justify-center items-center">
-        <form onSubmit={submitHandler} className="w-4/6 flex justify-center items-center border p-3 flex-col gap-4 ">
+        <form onSubmit={submitHandler} className="w-full md:w-4/6 flex justify-center items-center border p-3 flex-col gap-4 ">
           <h3 className="text-lg font-extrabold font-Poppins">Register</h3>
           <div>
             <div className="mb-2 block">

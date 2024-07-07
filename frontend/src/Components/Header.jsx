@@ -61,7 +61,7 @@ const Header = () => {
   const path = window.location.pathname; // Use window.location for path
 
   return (
-    <Navbar className="shadow sticky w-full top-0 z-10" fluid rounded>
+    <Navbar className="shadow sticky w-full top-0 z-10" fluid >
       {/* Logo */}
       <NavbarBrand as={"div"}>
         <NavbarBrand as={Link} to="/">
@@ -71,18 +71,7 @@ const Header = () => {
         </NavbarBrand>
       </NavbarBrand>
 
-      {/* Search Functionality */}
-      <form>
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={AiOutlineSearch}
-          className="hidden lg:inline focus:outline-none focus:ring-full"
-        ></TextInput>
-      </form>
-      <Button className="lg:hidden" color="gray">
-        <AiOutlineSearch />
-      </Button>
+     
 
       {/* Signin, logout, and navigation links */}
       <div className="flex gap-2 md:order-2">

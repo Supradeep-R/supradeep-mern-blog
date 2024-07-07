@@ -12,7 +12,7 @@ const PostCard = ({
   author,
 }) => {
   return (
-    <div className="flex flex-col border rounded-lg shadow-lg hover:shadow-2xl  md:flex-row">
+    <div className="flex flex-col border rounded-lg shadow-md hover:shadow-lg  md:flex-row">
       <div id="image-div" className="h-48 md:mb-0 md:w-1/5 md:h-auto">
       <Link to={`/view-single-post/${_id}`}>
           <img
@@ -33,7 +33,7 @@ const PostCard = ({
         </p>
         <p className="info mt-2 text-sm text-gray-600 dark:text-gray-400">
           <span className="author font-medium">
-            <Link to={`/view-author-posts/${author._id}`} className="underline">@{author.username}</Link>
+            <Link to={`/view-author-posts/${author._id}`} className=" text-blue-500 hover:underline">@{author.username}</Link>
           </span>
           <span className="ml-2">{formatISO9075(new Date(createdAt))}</span>
         </p>

@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
-import PostCard from "../Components/PostCard";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import PostCard from "../Components/PostCard";
 
 const ViewPosts = () => {
   const [posts, setPosts] = useState([]);
+  const { userInfo } = useContext(UserContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (!userInfo || !userInfo.username) {
+      navigate("/login"); // Redirect to login page if userInfo or username is not available
+      return;
+    }
+
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
@@ -18,7 +28,8 @@ const ViewPosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [userInfo, navigate]);
+
   return (
     <div>
       {posts.length > 0 &&

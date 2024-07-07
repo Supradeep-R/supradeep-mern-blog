@@ -1,70 +1,53 @@
-import React from 'react'
+import React from 'react';
 import {
-    Footer,
-    FooterBrand,
-    FooterCopyright,
-    FooterDivider,
-    FooterIcon,
-    FooterLink,
-    FooterLinkGroup,
-    FooterTitle,
-  } from "flowbite-react";
-  import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter } from "react-icons/bs";
+  Footer,
+  FooterBrand,
+  FooterDivider,
+  FooterLink,
+} from "flowbite-react";
+import { BsLinkedin, BsGithub, BsInstagram, BsPhone, BsEnvelope, BsTwitter } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-  
 
 const FooterComp = () => {
   return (
     <div>
-        <Footer container>
-      <div className="w-full">
-        <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
-          <div>
-            <Link to='/'
+      <Footer container>
+        <div className="w-full">
+          <div className="flex flex-col items-center sm:flex-row sm:justify-between">
+            <Link
+              to='/'
               alt="Supradeep's Blog Logo"
               name="Supradeep's Blog"
-              className='text-lg font-extrabold font-Poppins'
-            >Supradeep's Blog</Link>
+              className='text-lg font-extrabold font-Poppins mb-4 sm:mb-0'
+            >
+              Supradeep's Blog
+            </Link>
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 list-none">
+              <FooterLink href="https://www.linkedin.com/in/supradeep-revuru/" target="_blank" className="list-none">
+                <BsLinkedin className="inline-block mr-2" /> LinkedIn
+              </FooterLink>
+              <FooterLink href="https://github.com/Supradeep-R" target="_blank" className="list-none">
+                <BsGithub className="inline-block mr-2" /> GitHub
+              </FooterLink>
+              {/* <FooterLink href="https://www.instagram.com" target="_blank" className="list-none">
+                <BsInstagram className="inline-block mr-2" /> Instagram
+              </FooterLink> */}
+              {/* <FooterLink href="https://www.twitter.com" target="_blank" className="list-none">
+                <BsTwitter className="inline-block mr-2" /> Twitter
+              </FooterLink> */}
+              <FooterLink href="tel:6302268257" className="list-none">
+                <BsPhone className="inline-block mr-2" /> Phone
+              </FooterLink>
+              <FooterLink href="mailto:revuru.supradeep@gmail.com" className="list-none">
+                <BsEnvelope className="inline-block mr-2" /> revuru.supradeep@gmail.com
+              </FooterLink>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
-            <div>
-              <FooterTitle title="about" />
-              <FooterLinkGroup col>
-                <FooterLink href="#">Flowbite</FooterLink>
-                <FooterLink href="#">Tailwind CSS</FooterLink>
-              </FooterLinkGroup>
-            </div>
-            <div>
-              <FooterTitle title="Follow us" />
-              <FooterLinkGroup col>
-                <FooterLink href="#">Github</FooterLink>
-                <FooterLink href="#">Discord</FooterLink>
-              </FooterLinkGroup>
-            </div>
-            <div>
-              <FooterTitle title="Legal" />
-              <FooterLinkGroup col>
-                <FooterLink href="#">Privacy Policy</FooterLink>
-                <FooterLink href="#">Terms &amp; Conditions</FooterLink>
-              </FooterLinkGroup>
-            </div>
-          </div>
+          <FooterDivider />
         </div>
-        <FooterDivider />
-        <div className="w-full sm:flex sm:items-center sm:justify-between">
-          <FooterCopyright href="#" by="Flowbite™" year={2022} />
-          <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-            <FooterIcon href="#" icon={BsFacebook} />
-            <FooterIcon href="#" icon={BsInstagram} />
-            <FooterIcon href="#" icon={BsTwitter} />
-            <FooterIcon href="#" icon={BsGithub} />
-            <FooterIcon href="#" icon={BsDribbble} />
-          </div>
-        </div>
-      </div>
-    </Footer>
+      </Footer>
     </div>
-  )
+  );
 }
 
-export default FooterComp
+export default FooterComp;

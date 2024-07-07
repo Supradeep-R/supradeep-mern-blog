@@ -23,7 +23,7 @@ const App = () => {
         <Route exact path="/create-post" element={<CreatePost />} />
         <Route exact path="/view-posts" element={<ViewPosts />} />
         <Route exact path="/view-single-post/:id" element={<ViewSinglePost />} />
-        <Route exact path="/view-author-posts/:id" element={<ViewAuthorPosts />} />
+        <Route exact path="/view-author-posts/:authorId" element={<ViewAuthorPosts />} />
         <Route exact path="/edit-post/:id" element={<EditPost />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />

@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect,useContext } from "react";
+import { useParams,useNavigate } from "react-router-dom";
 import PostCard from "../Components/PostCard";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext"; 
 
 const ViewAuthorPosts = () => {
   const { authorId } = useParams();
   const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
+    if (!userInfo || !userInfo.username) {
+      navigate("/login"); // Redirect to login page if userInfo or username is not available
+      return;
+    }
+  
     const fetchAuthorPosts = async () => {
       try {
         const response = await axios.get(
@@ -26,10 +34,15 @@ const ViewAuthorPosts = () => {
     };
 
     fetchAuthorPosts();
-  }, [authorId]);
+  }, [userInfo, navigate]);
 
   return (
     <div>
+      {posts.length > 0 && (
+        <h2 className="text-center font-bold my-3 font-Poppins text-lg">
+          These are the posts by @{posts[0].author.username}
+        </h2>
+      )}
       {message ? (
         <p>{message}</p>
       ) : (

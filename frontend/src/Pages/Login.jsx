@@ -1,8 +1,8 @@
-import { React, useContext, useState } from 'react';
-import { Button, Checkbox, Label, TextInput, Toast } from 'flowbite-react';
+import React, { useContext, useState } from 'react';
+import { Button, TextInput, Toast } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../../context/UserContext'; // Adjust path as necessary
 import { HiExclamationCircle, HiCheckCircle } from 'react-icons/hi';
 
 const Login = () => {
@@ -19,7 +19,6 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       const response = await axios.post('http://localhost:3000/api/login', formData, {
         headers: {
@@ -29,14 +28,13 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        console.log('Login successful:', response.data);
-        setUserInfo(response.data);
+        setUserInfo(response.data); // Update user context with response data
         setToastMessage('Login successful!');
         setToastType('success');
         setShowToast(true);
         setTimeout(() => {
           navigate('/');
-        }, 1000); // Redirect after 2 seconds
+        }, 1000); // Redirect after 1 second
       } else {
         console.error('Login failed');
         setToastMessage('Login failed. Please try again.');
@@ -66,7 +64,7 @@ const Login = () => {
           </Toast>
         </div>
       )}
-      <div className="h-screen flex justify-center items-center gap-4 flex-col md:flex-row">
+      <div className="min-h-screen flex justify-center items-center gap-4 flex-col md:flex-row">
         {/* left */}
         <div className="w-1/2 p-6 justify-center items-center">
           <h2 className="text-xl font-bold">
@@ -80,11 +78,11 @@ const Login = () => {
 
         {/* right */}
         <div className="w-1/2 flex flex-col justify-center items-center">
-          <form onSubmit={submitHandler} className="w-4/6 flex justify-center items-center border p-3 flex-col gap-4 ">
+          <form onSubmit={submitHandler} className="w-full md:w-4/6 flex justify-center items-center border p-3 flex-col gap-4 ">
             <h3 className="text-lg font-extrabold font-Poppins">Login</h3>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="email" value="Your email" />
+                <label htmlFor="email">Your email</label>
               </div>
               <TextInput
                 id="email"
@@ -97,7 +95,7 @@ const Login = () => {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="password" value="Your password" />
+                <label htmlFor="password">Your password</label>
               </div>
               <TextInput
                 id="password"
