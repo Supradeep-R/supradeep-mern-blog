@@ -5,6 +5,7 @@ import axios from "axios";
 import { UserContext } from "../../context/UserContext"; 
 
 const ViewAuthorPosts = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { authorId } = useParams();
   const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
@@ -20,7 +21,7 @@ const ViewAuthorPosts = () => {
     const fetchAuthorPosts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/user/view-author-posts/${authorId}`,
+          `${backendUrl}/user/view-author-posts/${authorId}`,
           { withCredentials: true }
         );
         if (response.data.message) {

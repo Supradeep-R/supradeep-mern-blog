@@ -3,7 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Editor from "../Components/Editor";
 
+
 const EditPost = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
@@ -45,7 +47,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/view-single-post/${id}`, { withCredentials: true });
+        const response = await axios.get(`${backendUrl}/user/view-single-post/${id}`, { withCredentials: true });
         const data = response.data;
         setTitle(data.title);
         setSummary(data.summary);
@@ -64,7 +66,7 @@ const EditPost = () => {
     const updateData = { title, summary, content, imageURL };
 
     try {
-      const response = await axios.put(`http://localhost:3000/user/update-single-post/${id}`, updateData, {
+      const response = await axios.put(`${backendUrl}/user/update-single-post/${id}`, updateData, {
         headers: {
           "Content-Type": "application/json",
         },

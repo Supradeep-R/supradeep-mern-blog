@@ -5,7 +5,9 @@ import axios from 'axios';
 import { UserContext } from '../../context/UserContext'; // Adjust path as necessary
 import { HiExclamationCircle, HiCheckCircle } from 'react-icons/hi';
 
+
 const Login = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
@@ -20,7 +22,7 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/login', formData, {
+      const response = await axios.post(`${backendUrl}/api/login`, formData, {
         headers: {
           'Content-Type': 'application/json'
         },

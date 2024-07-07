@@ -8,11 +8,12 @@ const ViewSinglePost = () => {
   const [postInfo, setPostInfo] = useState(null);
   const { userInfo } = useContext(UserContext);
   const { id } = useParams();
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/view-single-post/${id}`, { withCredentials: true });
+        const response = await axios.get(`${backendUrl}/user/view-single-post/${id}`, { withCredentials: true });
         setPostInfo(response.data);
       } catch (error) {
         console.error("Error fetching post:", error);
