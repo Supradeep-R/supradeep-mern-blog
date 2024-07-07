@@ -5,6 +5,7 @@ import axios from 'axios';
 import { HiExclamationCircle, HiCheckCircle } from 'react-icons/hi';
 
 const Register = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
@@ -73,7 +74,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/register', formData, {
+      const response = await axios.post(`${backendUrl}/api/register`, formData, {
         headers: {
           'Content-Type': 'application/json'
         }

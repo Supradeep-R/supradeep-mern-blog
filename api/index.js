@@ -8,7 +8,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cors({ credentials: true, origin: "https://supradeeps-blog-app.vercel.app/" }));
 
 // integrating database connection
 const mongoDB = require("../api/db.js");

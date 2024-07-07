@@ -60,14 +60,10 @@ const viewSinglePost = async (req, res) => {
 };
 
 const viewAuthorPosts = async (req, res) => {
-  console.log("called view author posts");
   const { id } = req.params;
-  console.log(req.params);
-  console.log("Received author ID:", id);
 
   try {
     const posts = await Post.find({ author: id }).populate('author', ['username']).sort({ createdAt: -1 });
-    console.log(posts);
     if (posts.length === 0) {
       return res.status(404).json({ message: "No posts posted by this author" });
     }

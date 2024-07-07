@@ -4,7 +4,9 @@ import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import PostCard from "../Components/PostCard";
 
+
 const ViewPosts = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [posts, setPosts] = useState([]);
   const { userInfo } = useContext(UserContext);
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const ViewPosts = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/user/view-posts",
+          `${backendUrl}/user/view-posts`,
           { withCredentials: true }
         );
         setPosts(response.data);

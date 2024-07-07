@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 
 const Header = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ const Header = () => {
   const logout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/logout",
+        `${backendUrl}/api/logout`,
         {},
         { withCredentials: true }
       );

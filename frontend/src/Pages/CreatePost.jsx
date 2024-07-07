@@ -7,6 +7,7 @@ import axios from 'axios';
 import { UserContext } from "../../context/UserContext";
 
 const CreatePost = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
@@ -57,7 +58,7 @@ const CreatePost = () => {
     const postData = { title, summary, content, imageURL };
 
     try {
-      const response = await axios.post('http://localhost:3000/user/create-post', postData, {
+      const response = await axios.post(`${backendUrl}/user/create-post`, postData, {
         headers: {
           'Content-Type': 'application/json'
         },
