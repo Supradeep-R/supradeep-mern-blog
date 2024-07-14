@@ -1,91 +1,81 @@
-const User = require("../models/user.model");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const Post = require('../models/post.model');
 
-// Environment configuration
-const isProduction = 'production';
+// user controller updated - for git hub
+const createPost = async(req,res)=>{
+   const {title,summary,content,imageURL} = req.body;
+   const newPost = new Post({title,summary,content,imageURL,author:req.user.id});
+   try{
+    await newPost.save();
+    return res.status(200).json({message:"successfully posted",newPost});
+   }catch(error){
+    return res.status(500).json({message:"Some error occured in posting blog",error})
+   }
+}
 
-const register = async (req, res) => {
-  const { username, email, password, confirmpassword } = req.body;
-  if (!username || !password || !email || !confirmpassword || username === "" || password === "" || email === "" || confirmpassword === "") {
-    return res.status(400).json({ message: "Every field must be filled" });
-  }
-  if (confirmpassword !== password) {
-    return res.status(400).json({ message: "Password and Confirm password should match" });
-  }
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  if (!passwordRegex.test(password)) {
-    return res.status(400).json({
-      message: "Password must be at least 8 characters long, contain one uppercase letter, one number, and one special character"
-    });
-  }
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
-  try {
-    await newUser.save();
-    res.status(200).json({ message: "Signup successful" });
-  } catch (error) {
-    res.status(500).json({ message: "Error while registering", error });
-  }
-};
-
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password || email === "" || password === "") {
-    return res.status(400).json({ message: "All fields should be filled" });
-  }
-
-  try {
-    const validUser = await User.findOne({ email });
-    if (!validUser) {
-      return res.status(400).json({ message: "User not found" });
-    }
-    const validPassword = bcrypt.compareSync(password, validUser.password);
-    if (!validPassword) {
-      return res.status(400).json({ message: "Invalid Credentials" });
-    }
-
-    const token = jwt.sign(
-      { id: validUser._id, username: validUser.username },
-      process.env.SECRET_KEY,
-      { expiresIn: '1h' } // Set token expiry if needed
+const viewPosts = async(req,res)=>{
+   res.json(
+      await Post.find()
+        .populate('author', ['username'])
+        .sort({createdAt: -1})
     );
+}
+const viewSinglePost = async (req, res) => {
+   const { id } = req.params;
+   try {
+     const postDoc = await Post.findById(id).populate('author', ['username']);
+     res.json(postDoc);
+   } catch (error) {
+     res.status(500).json({ message: 'Error fetching the post', error });
+   }
+ };
+ 
+ const updateSinglePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, summary, content, imageURL } = req.body;
 
-    const { password: _, ...rest } = validUser.toObject();
+  // console.log("this is from update single post :" + req.user.id);
 
-    return res
-      .status(200)
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: isProduction, // Only set secure attribute in production
-        sameSite: isProduction ? 'None' : 'Lax', // Use 'None' if frontend and backend are on different domains
-        path: '/', // Ensure cookie is available across the site
-        domain: isProduction ? 'supradeeps-blog-app.vercel.app' : undefined, // Set domain if needed in production
-      })
-      .json(rest);
+  try {
+    const postDoc = await Post.findById(id);
+    if (!postDoc) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(req.user.id);
+    if (!isAuthor) {
+      return res.status(400).json('You are not the author');
+    }
+
+    const updatedData = { title, summary, content };
+    if (imageURL) {
+      updatedData.imageURL = imageURL;
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(id, updatedData, { new: true });
+
+    return res.status(200).json({ message: "Successfully updated post", updatedPost });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Some error in login", error });
+    console.error("Error updating post:", error);
+    return res.status(500).json({ message: "Some error occurred in updating the blog", error });
   }
 };
 
-const getProfile = async (req, res) => {
-  const { access_token } = req.cookies;
-  jwt.verify(access_token, process.env.SECRET_KEY, {}, (err, info) => {
-    if (err) {
-      return res.status(400).json({ message: "JWT not provided or invalid" });
+const viewAuthorPosts = async (req, res) => {
+  console.log("called view author posts");
+  const { id } = req.params;
+  console.log(req.params);
+  console.log("Received author ID:", id);
+
+  try {
+    const posts = await Post.find({ author: id }).populate('author', ['username']).sort({ createdAt: -1 });
+    console.log(posts);
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No posts posted by this author" });
     }
-    res.json(info);
-  });
-};
 
-const logout = (req, res) => {
-  res
-    .clearCookie("access_token", {
-      path: '/',
-      domain: isProduction ? 'supradeeps-blog-app.vercel.app' : undefined, // Set domain if needed in production
-    })
-    .json({ message: "Logged out successfully" });
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving posts", error });
+  }
 };
-
-module.exports = { register, login, getProfile, logout };
+module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost ,viewAuthorPosts};
