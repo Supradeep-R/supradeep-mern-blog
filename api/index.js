@@ -7,22 +7,10 @@ const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
-
-const allowedOrigins = [
-  "https://supradeep-blog-app.vercel.app",
-  "http://localhost:5173",
-];
-
 app.use(
   cors({
-    credentials: true,
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "*", // Allow any origin
+    credentials: true, // Enable credentials
   })
 );
 // integrating database connection
