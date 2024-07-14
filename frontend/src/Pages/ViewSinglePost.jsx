@@ -3,12 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
+import { Spinner } from "flowbite-react";
 
 const ViewSinglePost = () => {
   const [postInfo, setPostInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { userInfo } = useContext(UserContext);
   const { id } = useParams();
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -17,15 +19,21 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
         setPostInfo(response.data);
       } catch (error) {
         console.error("Error fetching post:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPost();
   }, [id]);
 
-
-
-  if (!postInfo) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
+  }
 
   return (
     <div className="post-page max-w-3xl mx-auto p-4">
