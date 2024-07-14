@@ -9,10 +9,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*", // Allow any origin
-    credentials: true, // Enable credentials
+    origin: "https://supradeep-mern-blog.vercel.app", // Specify your frontend origin
+    credentials: true,
   })
 );
+
 // integrating database connection
 const mongoDB = require("../api/db.js");
 mongoDB();
