@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link ,useNavigate } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
@@ -12,6 +12,7 @@ const ViewSinglePost = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const { userInfo } = useContext(UserContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
@@ -35,6 +36,9 @@ const ViewSinglePost = () => {
         await axios.delete(`${backendUrl}/user/delete-post/${id}`, { withCredentials: true });
         setAlertMessage("Post deleted successfully!");
         setAlertVisible(true);
+        setTimeout(() => {
+          navigate('/view-posts');
+        }, 1000);
         // Optionally, redirect or update state to remove post
       } catch (error) {
         console.error("Error deleting post:", error);
