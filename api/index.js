@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedOrigins = [
-  "https://supradeeps-blog-app.vercel.app",
+  "https://supradeep-blog-app.vercel.app",
   "http://localhost:5173",
 ];
 
