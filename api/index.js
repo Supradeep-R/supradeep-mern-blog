@@ -9,16 +9,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://supradeep-mern-blog.vercel.app", // Specify your frontend origin
+    origin: ["https://supradeep-mern-blog.vercel.app", "http://localhost:5173"], // Allow both production and local
     credentials: true,
   })
 );
 
-// integrating database connection
+// Integrating database connection
 const mongoDB = require("../api/db.js");
 mongoDB();
 
-// registering routes
+// Registering routes
 const authRoutes = require("../api/routes/auth.route.js");
 app.use("/api", authRoutes);
 const userRoutes = require("../api/routes/user.route.js");

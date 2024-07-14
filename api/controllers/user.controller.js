@@ -78,4 +78,27 @@ const viewAuthorPosts = async (req, res) => {
     res.status(500).json({ message: "Error retrieving posts", error });
   }
 };
-module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost ,viewAuthorPosts};
+
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const postDoc = await Post.findById(id);
+    if (!postDoc) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(req.user.id);
+    if (!isAuthor) {
+      return res.status(400).json('You are not the author');
+    }
+
+    await Post.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return res.status(500).json({ message: "Some error occurred in deleting the post", error });
+  }
+};
+
+module.exports = { createPost, viewPosts, viewSinglePost, updateSinglePost, deletePost, viewAuthorPosts };
