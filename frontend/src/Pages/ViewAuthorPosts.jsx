@@ -1,14 +1,16 @@
-import React, { useState, useEffect,useContext } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import PostCard from "../Components/PostCard";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext"; 
+import { Spinner } from "flowbite-react"; // Import Spinner from Flowbite
 
 const ViewAuthorPosts = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { authorId } = useParams();
   const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true); // State to manage loading
   const navigate = useNavigate();
   const { userInfo } = useContext(UserContext);
 
@@ -31,11 +33,21 @@ const ViewAuthorPosts = () => {
         }
       } catch (error) {
         console.error("Error fetching author posts:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
     fetchAuthorPosts();
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, authorId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" />
+      </div>
+    ); // Show loading spinner while fetching
+  }
 
   return (
     <div>
@@ -45,7 +57,7 @@ const ViewAuthorPosts = () => {
         </h2>
       )}
       {message ? (
-        <p>{message}</p>
+        <p className="text-center text-red-500">{message}</p>
       ) : (
         posts.length > 0 &&
         posts.map((post) => (
